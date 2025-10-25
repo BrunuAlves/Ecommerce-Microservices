@@ -36,6 +36,7 @@ Sistema de e-commerce construído com arquitetura de microserviços utilizando .
 | PUT    | `/api/products/{id}` | Editar produto      | Privado
 | DELETE | `/api/products/{id}` | Deletar produto       | Privado
 | GET    | `/api/products/{id}/availability` | Consulta estoque do produto       | Público
+| GET    | `/api/products/myproducts` | Consulta produtos do vendedor       | Privado
 
 ---
 
