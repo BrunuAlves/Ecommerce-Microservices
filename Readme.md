@@ -20,29 +20,32 @@ Sistema de e-commerce construído com arquitetura de microserviços utilizando .
 
 ### 🔑 AuthService
 
-| Método | Rota           | Descrição                                 |
-|--------|----------------|-------------------------------------------|
-| POST   | `/auth/login`  | Autentica usuário e retorna JWT           |
+| Método | Rota           | Descrição                                 | Acesso        |
+|--------|----------------|-------------------------------------------|---------------|
+| POST   | `/api/auth/login`  | Autentica usuário e retorna JWT           | Público
 
 ---
 
 ### 📦 StockService
 
-| Método | Rota                   | Descrição                     |
-|--------|------------------------|-------------------------------|
-| GET    | `/stock/products`      | Lista todos os produtos       |
-| POST   | `/stock/products`      | Cadastra novo produto         |
-| GET    | `/stock/products/{id}` | Consulta produto por ID       |
+| Método | Rota                       | Descrição                     | Acesso        |
+|--------|----------------------------|-------------------------------|---------------|
+| GET    | `/api/products`      | Lista todos os produtos       | Público
+| POST   | `/api/products`      | Cadastra novo produto         | Privado
+| GET    | `/api/products/{id}` | Consulta produto por ID       | Público
+| PUT    | `/api/products/{id}` | Editar produto      | Privado
+| DELETE | `/api/products/{id}` | Deletar produto       | Privado
+| GET    | `/api/products/{id}/availability` | Consulta estoque do produto       | Público
 
 ---
 
 ### 🛒 SalesService
 
-| Método | Rota                   | Descrição                          |
-|--------|------------------------|------------------------------------|
-| GET    | `/sales/orders`        | Lista pedidos                      |
-| POST   | `/sales/orders`        | Cria pedido (valida estoque)       |
-| GET    | `/sales/orders/{id}`   | Consulta pedido por ID             |
+| Método | Rota                   | Descrição                          | Acesso        |
+|--------|------------------------|------------------------------------|---------------|
+| GET    | `/api/orders`        | Lista pedidos                      | Privado
+| POST   | `/api/orders`        | Cria pedido (valida estoque)       | Privado
+| GET    | `/api/orders/{id}`   | Consulta pedido por ID             | Privado
 
 ---
 

@@ -93,5 +93,17 @@ namespace StockService.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("myproducts")]
+        public async Task<IActionResult> GetMyProducts()
+        {
+            var sellerId = GetSellerIdFromHeader();
+
+            var products = await _repo.GetBySellerIdAsync(sellerId);
+            var result = _mapper.Map<IEnumerable<ProductReadDto>>(products);
+
+            return Ok(result);
+        }
+
     }
 }

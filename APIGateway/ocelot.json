@@ -20,6 +20,24 @@
       }
     },
     { 
+      "_COMENT_": "Add route for StockService - protected",
+      "DownstreamPathTemplate": "/api/products/myproducts",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "stockservice", "Port": 8080 }],
+      "UpstreamPathTemplate": "/api/products/myproducts",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "profile": "seller"
+      },
+      "AddHeadersToRequest": {
+         "User-Id": "Claims[id] > value"
+      }
+    },
+    { 
       "_COMENT_": "Add route for StockService - public",
       "DownstreamPathTemplate": "/api/products/{everything}",
       "DownstreamScheme": "http",
