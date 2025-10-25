@@ -1,0 +1,99 @@
+services:
+
+  #RabbitMQ
+  rabbitmq:
+      image: rabbitmq:3.13-management
+      container_name: rabbitmq
+      hostname: rabbitmq
+      environment:
+        RABBITMQ_DEFAULT_USER: Us3rF0rR4bb1tMQ
+        RABBITMQ_DEFAULT_PASS: S3cr3tP4ssw0rdRMQ
+      ports:
+        - "5672:5672"   # AMQP
+        - "15672:15672" # Management UI
+      volumes:
+        - rabbitmq_data:/var/lib/rabbitmq
+
+  #APIGateway
+  apigateway:
+    #restart: on-failure
+    container_name: ApiGateway
+    build:
+      context: .
+      dockerfile: ApiGateway/Dockerfile
+    ports:
+      - "80:8080"      
+    depends_on:
+      - stockservice
+      - salesservice
+      - authservice
+      - rabbitmq
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      #- ASPNETCORE_URLS=http://+:8080
+
+  #StockService
+  stockservice:
+    restart: on-failure
+    container_name: stockservice
+    build:
+      context: .
+      dockerfile: StockService/Dockerfile
+    hostname: stockservice
+    environment:
+      # O C# lê HostName do appsettings, mas esta variável sobrescreve:
+      - RabbitMQ:HostName=rabbitmq # Nome do serviço Docker
+      - RabbitMQ:Username=Us3rF0rR4bb1tMQ
+      - RabbitMQ:Password=S3cr3tP4ssw0rdRMQ
+      - RabbitMQ:Port=5672
+      
+      #DB
+      - ConnectionStrings__StockConnection=Server=host.docker.internal,1433;Database=StockDB;User Id=sa;Password=S3nh@F0rte2025;TrustServerCertificate=True;
+
+      - ASPNETCORE_ENVIRONMENT=Development # Definir o ambiente como Development
+      #- ASPNETCORE_URLS=http://+:5000
+      - SERVICE_NAME=stockservice # Nome de registro (deve bater com o ocelot.json)
+    depends_on:
+      - rabbitmq
+
+
+  #SalesService
+  salesservice:
+    restart: on-failure
+    container_name: salesservice
+    build:
+      context: .
+      dockerfile: SalesService/Dockerfile
+    hostname: salesservice
+    environment:
+      # O C# lê HostName do appsettings, mas esta variável sobrescreve:
+      - RabbitMQ:HostName=rabbitmq # Nome do serviço Docker
+      - RabbitMQ:Username=Us3rF0rR4bb1tMQ
+      - RabbitMQ:Password=S3cr3tP4ssw0rdRMQ
+      - RabbitMQ:Port=5672
+      #DB
+      - ConnectionStrings__SalesConnection=Server=host.docker.internal,1433;Database=SalesDB;User Id=sa;Password=S3nh@F0rte2025;TrustServerCertificate=True;
+      
+      - ASPNETCORE_ENVIRONMENT=Development # Definir o ambiente como Development
+      #- ASPNETCORE_URLS=http://+:5001
+      - SERVICE_NAME=salesservice # Nome de registro (deve bater com o ocelot.json)
+    depends_on:
+      - rabbitmq
+
+  #AuthService
+  authservice:
+    restart: on-failure
+    container_name: authservice
+    build:
+      context: .
+      dockerfile: AuthService/Dockerfile
+    hostname: authservice
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development # Definir o ambiente como Development
+      #- ASPNETCORE_URLS=http://+:5003
+      - SERVICE_NAME=authservice # Nome de registro (deve bater com o ocelot.json)
+
+      
+#volumes para persistência de dados do RabbitMQ
+volumes:
+    rabbitmq_data:

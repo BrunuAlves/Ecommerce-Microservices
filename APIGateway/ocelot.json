@@ -1,0 +1,89 @@
+{
+  "Routes": [
+    {
+      "_COMENT_": "Add route for SalesService",
+      "DownstreamPathTemplate": "/api/orders/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "salesservice", "Port": 8080 }],
+      "UpstreamPathTemplate": "/api/orders/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "profile": "buyer"
+      },
+      "AddHeadersToRequest": {
+         "User-Id": "Claims[id] > value"
+      }
+    },
+    { 
+      "_COMENT_": "Add route for StockService - public",
+      "DownstreamPathTemplate": "/api/products/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "stockservice", "Port": 8080 }],
+      "UpstreamPathTemplate": "/api/products/{everything}",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    { 
+      "_COMENT_": "Add route for StockService - protected",
+      "DownstreamPathTemplate": "/api/products/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "stockservice", "Port": 8080 }],
+      "UpstreamPathTemplate": "/api/products/{everything}",
+      "UpstreamHttpMethod": [ "POST", "PUT", "DELETE" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "RouteClaimsRequirement": {
+        "profile": "seller"
+      },
+      "AddHeadersToRequest": {
+         "User-Id": "Claims[id] > value"
+      }
+    },
+    { 
+      "_COMENT_": "Add route for AuthService",
+      "DownstreamPathTemplate": "/api/auth/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [ { "Host": "authservice", "Port": 8080 } ],
+      "UpstreamPathTemplate": "/api/auth/{everything}",
+      "UpstreamHttpMethod": ["POST"]
+    },    
+    {
+      "_COMENT_": "Add route for StockService Swagger",
+      "DownstreamPathTemplate": "/swagger/v1/swagger.json",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "stockservice", "Port": 8080 }],
+      "UpstreamPathTemplate": "/stock/swagger/v1/swagger.json",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "_COMENT_": "Add route for SalesService Swagger",
+      "DownstreamPathTemplate": "/swagger/v1/swagger.json",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "salesservice", "Port": 8080 }],
+      "UpstreamPathTemplate": "/sales/swagger/v1/swagger.json",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "_COMENT_": "Add route for AuthService Swagger",
+      "DownstreamPathTemplate": "/swagger/v1/swagger.json",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [{ "Host": "authservice", "Port": 8080 }],
+      "UpstreamPathTemplate": "/auth/swagger/v1/swagger.json",
+      "UpstreamHttpMethod": [ "GET" ]
+    }
+
+  ],
+  "GlobalConfiguration": {
+    "ServiceDiscoveryProvider": {
+      "Host": "consul",
+      "Port": 8500,
+      "Type": "Consul"
+    }
+  }
+}

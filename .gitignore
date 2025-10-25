@@ -1,0 +1,48 @@
+# Build artifacts
+bin/
+obj/
+out/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code settings
+.vscode/
+.vs/
+
+#github settings
+.github/
+
+# Rider settings
+.idea/
+
+# Logs
+*.log
+
+# Docker
+**/docker-compose.override.yml
+**/.env
+
+# ASP.NET secrets
+secrets.json
+
+# Dependency caches
+packages/
+.nuget/
+*.nupkg
+
+# Configuration
+appsettings.Development.json
+appsettings.Local.json
+
+# OS-specific
+Thumbs.db
+.DS_Store
+
+# Others
+*.swp
+*.bak
+*.tmp
