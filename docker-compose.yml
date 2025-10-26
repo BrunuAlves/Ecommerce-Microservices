@@ -19,8 +19,8 @@ services:
     #restart: on-failure
     container_name: ApiGateway
     build:
-      context: .
-      dockerfile: ApiGateway/Dockerfile
+      context: ./ApiGateway
+      dockerfile: Dockerfile
     ports:
       - "80:8080"      
     depends_on:
@@ -37,8 +37,8 @@ services:
     restart: on-failure
     container_name: stockservice
     build:
-      context: .
-      dockerfile: StockService/Dockerfile
+      context: ./StockService
+      dockerfile: Dockerfile
     hostname: stockservice
     environment:
       # O C# lê HostName do appsettings, mas esta variável sobrescreve:
@@ -62,8 +62,8 @@ services:
     restart: on-failure
     container_name: salesservice
     build:
-      context: .
-      dockerfile: SalesService/Dockerfile
+      context: ./SalesService
+      dockerfile: Dockerfile
     hostname: salesservice
     environment:
       # O C# lê HostName do appsettings, mas esta variável sobrescreve:
@@ -85,8 +85,8 @@ services:
     restart: on-failure
     container_name: authservice
     build:
-      context: .
-      dockerfile: AuthService/Dockerfile
+      context: ./AuthService
+      dockerfile: Dockerfile
     hostname: authservice
     environment:
       - ASPNETCORE_ENVIRONMENT=Development # Definir o ambiente como Development
