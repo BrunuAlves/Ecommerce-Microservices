@@ -23,10 +23,10 @@ namespace SalesService.Models
 
         [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
-
-        [ForeignKey("Order")]
+        
         public int OrderId { get; set; }
-
+        
+        [ForeignKey("OrderId")]
         [JsonIgnore]
         public Order Order { get; set; }
     }
