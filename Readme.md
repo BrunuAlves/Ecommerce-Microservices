@@ -52,7 +52,7 @@ Sistema de e-commerce construído com arquitetura de microserviços utilizando .
 
 ## 🔐 Autenticação
 
-- Login via `POST /auth/login`
+- Login via `POST /api/auth/login`
 - Retorna token JWT com perfil (`buyer` ou `seller`)
 - Token deve ser enviado no header:  
   `Authorization: Bearer {token}`
